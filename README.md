@@ -29,9 +29,9 @@ To establish sustainable waste management and resource recovery systems for luna
 │   ├── operational-protocols/     # Operating procedures
 │   ├── environmental-data/        # Lunar environment data
 │   └── research/                  # Research papers and references
-├── src/                           # Source code (future implementation)
 ├── data/                          # Sample data and payloads
 ├── web-app/                       # Documentation web interface
+├── real-time-overlay/             # Real-time data visualization app (React/Vite)
 └── README.md                      # This file
 ```
 
@@ -40,7 +40,8 @@ To establish sustainable waste management and resource recovery systems for luna
 1. Clone this repository
 2. Review the documentation in `docs/`
 3. Explore the web app by opening `web-app/index.html`
-4. Examine technical specifications for implementation details
+4. Run the real-time overlay app (see Real-Time Visualization section)
+5. Examine technical specifications for implementation details
 
 ## 🔬 Technical Highlights
 
@@ -99,6 +100,24 @@ A comprehensive documentation web app is included in the `web-app/` directory. O
 - Real-time payload calculations
 - Environmental simulation data
 - Technical specifications browser
+
+## 📡 Real-Time Visualization
+
+An interactive real-time data overlay application built with React and Vite is available in `real-time-overlay/`:
+
+```bash
+cd real-time-overlay
+npm install
+npm run dev
+```
+
+Features:
+- 3D animated background with Three.js
+- Live camera feed simulations
+- Satellite mapping integration
+- Real-time connection graphs
+- System metrics dashboard
+- Cyberpunk-themed UI with glassmorphism effects
 
 ## 🤝 Contributing
 
