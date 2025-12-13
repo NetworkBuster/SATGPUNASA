@@ -13,10 +13,11 @@ export default function CameraFeed({ id, fps, quality }) {
             setTimestamp(new Date().toISOString());
 
             // Draw Noise/Scanlines to simulate video feed
-            if (canvasRef.current) {
-                const ctx = canvasRef.current.getContext('2d');
-                const w = canvasRef.current.width;
-                const h = canvasRef.current.height;
+            const canvas = canvasRef.current;
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
 
                 ctx.fillStyle = '#000';
                 ctx.fillRect(0, 0, w, h);

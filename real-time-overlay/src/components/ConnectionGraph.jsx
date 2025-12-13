@@ -25,6 +25,8 @@ export default function ConnectionGraph() {
         return () => clearInterval(interval);
     }, []);
 
+    const latestData = data[data.length - 1];
+    
     return (
         <div className="w-full h-full p-2 flex flex-col">
             <h3 className="text-[#00f0ff] text-xs uppercase tracking-widest mb-2 border-b border-[#00f0ff]/20 pb-1">Connection Strength (Simulated)</h3>
@@ -45,9 +47,9 @@ export default function ConnectionGraph() {
                 </ResponsiveContainer>
             </div>
             <div className="flex justify-between text-[10px] mt-1 text-gray-400">
-                <span style={{ color: '#00f0ff' }}>CPU: {data[data.length - 1]?.cpu?.toFixed(1) ?? '0.0'}%</span>
-                <span style={{ color: '#ff003c' }}>GPU: {data[data.length - 1]?.gpu?.toFixed(1) ?? '0.0'}%</span>
-                <span style={{ color: '#00ff00' }}>NPU: {data[data.length - 1]?.npu?.toFixed(1) ?? '0.0'}%</span>
+                <span style={{ color: '#00f0ff' }}>CPU: {latestData?.cpu?.toFixed(1) ?? '0.0'}%</span>
+                <span style={{ color: '#ff003c' }}>GPU: {latestData?.gpu?.toFixed(1) ?? '0.0'}%</span>
+                <span style={{ color: '#00ff00' }}>NPU: {latestData?.npu?.toFixed(1) ?? '0.0'}%</span>
             </div>
         </div>
     );
