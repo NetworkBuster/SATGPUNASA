@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
 export default function CameraFeed({ id, fps, quality }) {
-    const [frameData, setFrameData] = useState(0);
     const [timestamp, setTimestamp] = useState(new Date().toISOString());
     const canvasRef = useRef(null);
 
@@ -9,7 +8,6 @@ export default function CameraFeed({ id, fps, quality }) {
     useEffect(() => {
         const interval = 1000 / fps;
         const timer = setInterval(() => {
-            setFrameData(f => (f + 1) % 1000);
             setTimestamp(new Date().toISOString());
 
             // Draw Noise/Scanlines to simulate video feed

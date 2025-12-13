@@ -28,8 +28,10 @@ function RotatingGrid() {
 function FloatingCube() {
     const meshRef = useRef();
     useFrame((state, delta) => {
-        meshRef.current.rotation.x += delta * 0.2;
-        meshRef.current.rotation.y += delta * 0.2;
+        if (meshRef.current) {
+            meshRef.current.rotation.x += delta * 0.2;
+            meshRef.current.rotation.y += delta * 0.2;
+        }
     });
 
     return (
