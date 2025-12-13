@@ -45,9 +45,9 @@ export default function ConnectionGraph() {
                 </ResponsiveContainer>
             </div>
             <div className="flex justify-between text-[10px] mt-1 text-gray-400">
-                <span style={{ color: '#00f0ff' }}>CPU: {data[data.length - 1]?.cpu.toFixed(1)}%</span>
-                <span style={{ color: '#ff003c' }}>GPU: {data[data.length - 1]?.gpu.toFixed(1)}%</span>
-                <span style={{ color: '#00ff00' }}>NPU: {data[data.length - 1]?.npu.toFixed(1)}%</span>
+                <span style={{ color: '#00f0ff' }}>CPU: {data[data.length - 1]?.cpu?.toFixed(1) ?? '0.0'}%</span>
+                <span style={{ color: '#ff003c' }}>GPU: {data[data.length - 1]?.gpu?.toFixed(1) ?? '0.0'}%</span>
+                <span style={{ color: '#00ff00' }}>NPU: {data[data.length - 1]?.npu?.toFixed(1) ?? '0.0'}%</span>
             </div>
         </div>
     );
