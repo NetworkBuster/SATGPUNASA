@@ -27,6 +27,24 @@ app.get('/api/status', (req, res) => {
     res.json({ status: 'ok', uptime: process.uptime(), app: fs.existsSync(STATIC_DIR) });
 });
 
+// Native binding test
+try {
+    const native = require(path.join(__dirname, 'native'));
+    app.post('/api/cuda/add', (req, res) => {
+        const n = parseInt(req.query.size || '1024');
+        const a = new Float32Array(n);
+        const b = new Float32Array(n);
+        for (let i = 0; i < n; i++) { a[i] = Math.random(); b[i] = Math.random(); }
+        const out = native.addVectors(a, b);
+        // Return checksum and sample
+        let sum = 0;
+        for (let i = 0; i < out.length; i++) sum += out[i];
+        res.json({ n: out.length, sum });
+    });
+} catch (e) {
+    logger.warn('Native binding helper not available; /api/cuda/add will fallback to CPU via loader');
+}
+
 function spawnBackground(cmd, args, logPrefix) {
     const p = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'], shell: true });
     p.stdout.on('data', d => logger.info(`${logPrefix}: ${d.toString()}`));
@@ -53,6 +71,36 @@ app.get('/api/list-files', (req, res) => {
     const items = fs.readdirSync(dir).slice(0, 200);
     res.json({ files: items });
 });
+
+// Metrics endpoint
+const { client } = require('./metrics');
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', client.register.contentType);
+    res.send(await client.register.metrics());
+});
+
+// Enqueue inference job
+app.post('/api/infer', express.json(), async (req, res) => {
+    const { input } = req.body || {};
+    if (!input) return res.status(400).json({ error: 'input required' });
+    const { inferenceQueue } = require('./queue');
+    const job = await inferenceQueue.add('infer', { input });
+    res.status(202).json({ jobId: job.id, status: 'queued' });
+});
+
+// Poll for result
+app.get('/api/infer/:id', async (req, res) => {
+    const Redis = require('ioredis');
+    const redis = new Redis(process.env.REDIS_URL || 'redis://127.0.0.1:6379');
+    const key = `infer:result:${req.params.id}`;
+    const v = await redis.get(key);
+    if (!v) return res.status(202).json({ status: 'pending' });
+    res.json({ status: 'done', result: JSON.parse(v) });
+});
+
+// SSE streaming endpoint
+const sseHandler = require('./native/sse');
+app.get('/api/stream/:jobId', sseHandler);
 
 app.listen(PORT, () => {
     logger.info(`Server started on ${PORT}`);
