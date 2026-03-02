@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import AvatarWorld from './components/AvatarWorld'
 import SatelliteMap from './components/SatelliteMap'
 import CameraFeed from './components/CameraFeed'
@@ -6,8 +5,6 @@ import ConnectionGraph from './components/ConnectionGraph'
 import { Monitor, Cpu, Map as MapIcon, Video } from 'lucide-react'
 
 function App() {
-    const [activeTab, setActiveTab] = useState('dashboard');
-
     return (
         <div className="relative w-screen h-screen overflow-hidden">
             {/* 3D Background */}
